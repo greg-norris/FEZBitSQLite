@@ -37,6 +37,8 @@ namespace FEZBitSQLite
         internal enum FontResources : short
         {
             Play = -28308,
+            GC_pixel = 22327,
+            Compact = 26436,
         }
         [System.SerializableAttribute()]
         internal enum BitmapResources : short

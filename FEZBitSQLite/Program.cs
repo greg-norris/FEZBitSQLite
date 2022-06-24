@@ -24,17 +24,18 @@ var screen = Graphics.FromImage(new Bitmap(160, 128));
 var image = FEZBitSQLite.Resource1.GetBitmap(FEZBitSQLite.Resource1.BitmapResources.logo);
 var image2 = FEZBitSQLite.Resource1.GetBitmap(FEZBitSQLite.Resource1.BitmapResources.SQLiteLogo);
 var font = FEZBitSQLite.Resource1.GetFont(FEZBitSQLite.Resource1.FontResources.Play);
+var font2 = FEZBitSQLite.Resource1.GetFont(FEZBitSQLite.Resource1.FontResources.GC_pixel);
 
 InitDisplay();
 
 screen.Clear();
 screen.DrawImage(image, 0, 0);
 screen.Flush();
-Thread.Sleep(2000);
+Thread.Sleep(1000);
 
 screen.DrawImage(image2, 0, 0);
 screen.Flush();
-Thread.Sleep(2000);
+Thread.Sleep(1000);
 
 screen.Clear();
 screen.Flush();
@@ -42,38 +43,49 @@ screen.Flush();
 using (var db = new SQLiteDatabase())
 {
 
-    db.ExecuteNonQuery("CREATE TABLE Stock (Name TEXT, High DOUBLE, Low DOUBLE);");
+    db.ExecuteNonQuery("CREATE TABLE Agent (Name TEXT, City TEXT, Sales DOUBLE);");
 
-    screen.DrawString("Creating Table...", font, yellow, 10, 30);
+
+    db.ExecuteNonQuery("INSERT INTO Agent(Name, City, Sales) VALUES ('Bob', 'Dallas', 20375.69);");
+    db.ExecuteNonQuery("INSERT INTO Agent(Name, City, Sales) VALUES('Karen', 'Atlanta', 24145.51);");
+    db.ExecuteNonQuery("INSERT INTO Agent(Name, City, Sales) VALUES('Steve', 'Detroit', 16934.04);");
+    db.ExecuteNonQuery("INSERT INTO Agent(Name, City, Sales) VALUES('Cindy', 'Austin', 12934.04);");
+    db.ExecuteNonQuery("INSERT INTO Agent(Name, City, Sales) VALUES('Gus', 'Orlando', 25924.04);");
+    db.ExecuteNonQuery("INSERT INTO Agent(Name, City, Sales) VALUES('Greg', 'Seattle', 15934.04);");
+    db.ExecuteNonQuery("INSERT INTO Agent(Name, City, Sales) VALUES('Tim', 'Portland', 18934.04);");
+
+    var result1 = db.ExecuteQuery("SELECT Name FROM Agent WHERE Sales > 10000;");
+    var result2 = db.ExecuteQuery("SELECT City FROM Agent WHERE Sales > 10000;");
+    var result3 = db.ExecuteQuery("SELECT Sales FROM Agent WHERE Sales > 10000;");
+
+
+    screen.DrawString("Creating Table...", font, yellow, 10, 20);
     screen.Flush();
-    Thread.Sleep(1000);
+    Thread.Sleep(500);
     screen.DrawString("Intializing Data...", font, yellow, 10, 45);
     screen.Flush();
-    Thread.Sleep(1000);
-    screen.DrawString("Quering Data...", font, yellow, 10, 60);
+    Thread.Sleep(500);
+    screen.DrawString("Quering Data...", font, yellow, 10, 70);
     screen.Flush();
-    Thread.Sleep(1000);
+    Thread.Sleep(500);
 
     screen.Clear();
     screen.Flush();
 
-    db.ExecuteNonQuery("INSERT INTO Stock(Name, High, Low) VALUES ('Google', 3030.93, 2037.69);");
-    db.ExecuteNonQuery("INSERT INTO Stock(Name, High, Low) VALUES('Microsoft', 349.67, 241.51);");
-    db.ExecuteNonQuery("INSERT INTO Stock(Name, High, Low) VALUES('Apple', 182.94, 129.04);");
-
-
-    var result1 = db.ExecuteQuery("SELECT Name FROM Stock WHERE High > 350;");
-
-    var result2 = db.ExecuteQuery("SELECT Name FROM Stock WHERE High < 200;");
-
     //GC.Collect();
     //GC.WaitForPendingFinalizers();
 
-    screen.DrawString("Highest Stock:", font, yellow, 10, 10);
-    screen.DrawString("Lowest Stock:", font, yellow, 10, 55);
+
+    screen.DrawString("Name", font, yellow,0, 0);
+
+    screen.DrawString("City", font, yellow, 60, 0);
+
+    screen.DrawString("Sales", font, yellow, 115, 0);
+
 
     var str = "";
-
+    var x = 30;
+    var y = 5;
     foreach (ArrayList i in result1.Data)
     {
         str = "";
@@ -81,11 +93,14 @@ using (var db = new SQLiteDatabase())
         foreach (object j in i)
             str += j.ToString() + " ";
 
-        screen.DrawString(str, font, white, 10, 30);
+        screen.DrawString(str, font2, white, y, x);
+        screen.Flush();
+        Thread.Sleep(50);
+        x=x+15;
 
-       
     }
-
+    x = 30;
+    y = y + 60;
     foreach (ArrayList i in result2.Data)
     {
         str = "";
@@ -93,12 +108,41 @@ using (var db = new SQLiteDatabase())
         foreach (object j in i)
             str += j.ToString() + " ";
 
-        screen.DrawString(str, font, white, 10, 70);
+        screen.DrawString(str, font2, white, y, x);
+        screen.Flush();
+        Thread.Sleep(50);
+        x = x + 15;
 
-       
     }
-    screen.Flush();
-    Thread.Sleep(2000);
+    x = 30;
+    y = y + 55;
+    foreach (ArrayList i in result3.Data)
+    {
+        str = "";
+
+        foreach (object j in i)
+            str += j.ToString() + " ";
+
+        screen.DrawString(str, font2, white, y, x);
+        screen.Flush();
+        Thread.Sleep(50);
+        x = x + 15;
+
+    }
+
+    //foreach (ArrayList i in result2.Data)
+    //{
+    //    str = "";
+
+    //    foreach (object j in i)
+    //        str += j.ToString() + " ";
+
+    //    screen.DrawString(str, font, white, 10, 70);
+
+
+    //}
+    //screen.Flush();
+    //Thread.Sleep(2000);
 
 }
 

@@ -47,6 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\ArialBlack.tcfnt" />
+    <None Include="Resources\Compact.tcfnt" />
+    <None Include="Resources\GC-pixel.tcfnt" />
     <None Include="Resources\Play.tcfnt" />
   </ItemGroup>
   <ItemGroup>
